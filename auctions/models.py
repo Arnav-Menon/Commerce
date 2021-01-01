@@ -8,14 +8,14 @@ class User(AbstractUser):
 class Listing(models.Model):
     item = models.CharField(max_length=32)
     description = models.CharField(max_length=128)
-    start_price = models.FloatField()
+    current_price = models.IntegerField()
 
     def __str__(self):
-        return f"{self.item}"
+        return f"{self.id}: {self.item}"
 
 class Bid(models.Model):
+    new_price = models.IntegerField()
     bid_item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listed_item")
-    new_price = models.FloatField()
 
     def __str__(self):
         return f"${self.new_price} on {self.bid_item}"
