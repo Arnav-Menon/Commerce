@@ -3,5 +3,21 @@
 {% block body %}
     <h2>Active Listings</h2>
 
-    TODO
+    {% if user.is_authenticated %}
+    <ul>
+        {% for items in listing %}
+            <h4>{{ items }}</h4>
+            <ol>
+                <strong>Description:</strong> {{ items.description}}
+            </ol>
+            <ol>
+                <strong>Current Price:</strong> ${{ items.current_price }}
+            </ol>
+        {% endfor %}
+    </ul>
+    {% else %}
+        Please sign in or register to see active listings.
+    {% endif %}
+
+
 {% endblock %}
