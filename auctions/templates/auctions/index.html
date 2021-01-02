@@ -15,6 +15,9 @@
             <ol>
                 <strong>Current Price:</strong> ${{ items.current_price }}
             </ol>
+            {% if items.picture_url %}
+                {{ items.picture_url }}
+            {% endif %}
         {% endfor %}
     </ul>
     {% else %}
