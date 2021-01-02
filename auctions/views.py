@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -64,3 +64,13 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+def item_info(request, item_id):
+    try:
+        print("Hello")
+        listings = Listing.objects.get(id=item_id)
+    except Listing.DoesNotExist:
+        raise Http404("Listing not found.")
+    return render(request, "auctions/item.html", {
+        "listing": listings,
+    })
