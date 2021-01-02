@@ -67,10 +67,14 @@ def register(request):
 
 def item_info(request, item_id):
     try:
-        print("Hello")
         listings = Listing.objects.get(id=item_id)
     except Listing.DoesNotExist:
         raise Http404("Listing not found.")
     return render(request, "auctions/item.html", {
         "listing": listings,
     })
+
+def create_listing(request):
+    print("Hello")
+
+    return render(request, "auctions/create.html")
