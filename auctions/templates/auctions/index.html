@@ -6,7 +6,9 @@
     {% if user.is_authenticated %}
     <ul>
         {% for items in listing %}
-            <h4>{{ items }}</h4>
+            <h4>
+                <a href="{% url 'item_info' items.id %}">{{ items }}</a>
+            </h4>
             <ol>
                 <strong>Description:</strong> {{ items.description}}
             </ol>
