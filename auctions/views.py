@@ -106,3 +106,39 @@ def place_bid(request, item_id):
         "bid_count": num_bids,
         "form": NewBidForm()
     })
+
+def create_listing(request):
+    if request.method == "POST":
+
+        form = ListingForm(request.POST)
+        if form.errors:
+            messages.add_message(request, messages.INFO, form.errors)
+            return render(request, "auctions/create.html", {
+                "form": form
+            })
+
+        if form.is_valid():
+            fcd = form.cleaned_data
+            title = fcd["item"]
+            des = fcd["description"]
+            cp = fcd["current_price"]
+            pu = None
+            cat = None
+            if fcd["picture_url"]:
+                pu = fcd["picture_url"]
+            if fcd["category"]:
+                cat = fcd["category"]
+            
+            messages.add_message(request, messages.INFO, "Listing created successfully")
+            new_obj = Listing.objects.create(
+                item=title,
+                description=des,
+                current_price=cp,
+                picture_url=None or pu,
+                category=None or cat
+            )
+            return index(request)
+
+    return render(request, "auctions/create.html", {
+        "form": ListingForm()
+    })
