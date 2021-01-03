@@ -3,9 +3,12 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
+from django import forms
 
 from .models import *
 
+class NewBidForm(forms.Form):
+    bid = forms.CharField(max_length=6)
 
 def index(request):
     listings = Listing.objects.all()
@@ -66,15 +69,36 @@ def register(request):
         return render(request, "auctions/register.html")
 
 def item_info(request, item_id):
-    try:
-        listings = Listing.objects.get(id=item_id)
-    except Listing.DoesNotExist:
-        raise Http404("Listing not found.")
+    listing = Listing.objects.get(id=item_id)
+    num_bids = listing.listed_item.all().count()
+
+    # TODO: get user who listed the item
+    # probably gonna have to mess with the Listing model
+
     return render(request, "auctions/item.html", {
-        "listing": listings,
+        "listing": listing,
+        "bid_count": num_bids
     })
 
-def create_listing(request):
-    print("Hello")
+# TODO: finish this method
+# form is not rendering prperly
+def place_bid(request, item_id):
+    if request.method == "POST":
+        print("Lets place a bid")
+        form = NewBidForm(request.POST)
+        print(form.is_valid())
+        if form.is_valid():
+            potential_bid = form.cleaned_data["bid"]
+            print(potential_bid)
+            return HttpResponseRedirect(reverse("index"))
+        
+        listings = Listing.objects.get(id=item_id)
+        print(listings)
+        num_bids = listings.listed_item.all().count()
 
-    return render(request, "auctions/create.html")
+    print("First Time")
+    return render(request, "auctions/item.html", {
+        "listing": listings,
+        "bid_count": num_bids,
+        "form": NewBidForm()
+    })
