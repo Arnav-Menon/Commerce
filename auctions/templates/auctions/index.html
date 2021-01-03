@@ -4,6 +4,12 @@
     <h2>Active Listings</h2>
 
     {% if user.is_authenticated %}
+
+    {% if messages %}
+        {% for msg in messages %}
+            <ol><mark>{{msg}}</mark></ol>
+        {% endfor %}
+    {% endif %}
     <ul>
         {% for items in listing %}
             <h4>
