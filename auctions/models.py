@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.forms import ModelForm
+from django import forms
 
 
 class User(AbstractUser):
@@ -9,11 +11,28 @@ class Listing(models.Model):
     item = models.CharField(max_length=32)
     description = models.CharField(max_length=128)
     current_price = models.IntegerField()
-    picture_url = models.URLField(default="", blank=True)
-    category = models.CharField(max_length=32, blank=True)
+    picture_url = models.URLField(default="", null=True, blank=True)
+    category = models.CharField(max_length=32, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.id}: {self.item}"
+        return f"{self.item}"
+
+class ListingForm(ModelForm):
+    picture_url = forms.URLField(
+        required=False,
+        widget=forms.Textarea(
+            attrs={"placeholder": "Optional", "rows": 1}
+        ),
+    )
+    category = forms.CharField(
+        required=False,
+        widget=forms.Textarea(
+            attrs={"placeholder": "Optional", "rows": 1}
+        ),
+    )
+    class Meta:
+        model = Listing
+        fields = "__all__"
 
 class Bid(models.Model):
     new_price = models.IntegerField()
