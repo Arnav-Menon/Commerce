@@ -1,0 +1,49 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="listing">
+        <h2>Listing: {{ listing.item }}</h2>
+
+        {% if listing.picture_url %}
+            <img src="{{ listing.picture_url }}" width=70%>
+        {% endif %}
+
+        <p style="display:block">{{ listing.description }}</p>
+
+        <strong style="font-size:40px">${{ listing.current_price }}</strong>
+
+        <form action="{% url 'bid' listing.id %}" method="post">
+            {% csrf_token %}
+
+            {% if messages %}
+                {% for msg in messages %}
+                    <ol><mark>{{msg}}</mark></ol>
+                {% endfor %}
+             {% endif %}
+
+            {{ bid_count }} bid(s) so far. Your bid is the current bid.
+            
+            {{ form }}
+
+            <input type="submit" value="Place Bid">
+        </form>
+
+
+        <strong style="display:block; font-size:20px">Details</strong>
+
+        <li>
+            Listed by:
+        </li>
+        <li>
+            Category: 
+            {% if listing.category %}
+                {{ listing.category }}
+            {% else %}
+                No Category Listed
+            {% endif %}
+        </li>
+
+    </div>
+    
+    
+{% endblock %}
