@@ -10,7 +10,7 @@ class Listing(models.Model):
     description = models.CharField(max_length=128)
     current_price = models.IntegerField()
     picture_url = models.URLField(default="", blank=True)
-    category = models.CharField(max_length=32)
+    category = models.CharField(max_length=32, blank=True)
 
     def __str__(self):
         return f"{self.id}: {self.item}"
