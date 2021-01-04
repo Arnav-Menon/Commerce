@@ -155,5 +155,19 @@ def watchlist(request):
         "users": users
     })
 
-def categories(request):
-    return render(request, "auctions/categories.html")
+def list_categories(request):
+    listings = Listing.objects.all()
+    categories = []
+    for l in listings:
+        if l.category not in categories:
+            categories.append(l.category)
+    return render(request, "auctions/list_categories.html", {
+        "categories": categories
+    })
+
+def categorical_items(request, category):
+    listings = Listing.objects.filter(category=category)
+    return render(request, "auctions/item_categories.html", {
+        "category": category,
+        "listings": listings
+    })
