@@ -73,7 +73,7 @@ def item_info(request, item_id):
     listing = Listing.objects.get(id=item_id)
     num_bids = listing.listed_item.all().count()
     if num_bids != 0:
-        bid = Bid.objects.get(bid_item=listing)
+        bid = Bid.objects.filter(bid_item=listing).last()
         bidder = bid.latest_bidder
     else:
         bidder = None

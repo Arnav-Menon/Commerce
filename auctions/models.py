@@ -44,6 +44,9 @@ class Bid(models.Model):
     bid_item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listed_item")
     latest_bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bidder")
 
+    class Meta:
+        get_latest_by = ["latest_bidder"]
+
     def __str__(self):
         return f"{self.latest_bidder} bid ${self.new_price} on {self.bid_item}"
 
