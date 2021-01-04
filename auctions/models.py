@@ -13,6 +13,7 @@ class Listing(models.Model):
     current_price = models.IntegerField()
     picture_url = models.URLField(default="", null=True, blank=True)
     category = models.CharField(max_length=32, null=True, blank=True)
+    user = models.CharField(max_length=32, null=True, blank=True)
 
     def __str__(self):
         return f"{self.item}"
@@ -30,6 +31,10 @@ class ListingForm(ModelForm):
             attrs={"placeholder": "Optional", "rows": 1}
         ),
     )
+    user = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
     class Meta:
         model = Listing
         fields = "__all__"
@@ -37,9 +42,10 @@ class ListingForm(ModelForm):
 class Bid(models.Model):
     new_price = models.IntegerField()
     bid_item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listed_item")
+    latest_bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bidder")
 
     def __str__(self):
-        return f"${self.new_price} on {self.bid_item}"
+        return f"{self.latest_bidder} bid ${self.new_price} on {self.bid_item}"
 
 class Comment(models.Model):
     item_commented = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="og_item")
