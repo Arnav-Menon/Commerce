@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h1>{{ category }}</h1>
+
+    {% for items in listings %}
+    <div class="listings">
+            <h4>
+                <a href="{% url 'item_info' items.id %}">{{ items }}</a>
+            </h4>
+            <strong>Description:</strong> {{ items.description}}<br/>
+            <strong>Current Price:</strong> ${{ items.current_price }}<br/>
+            {% if items.picture_url %}
+                <img src="{{ items.picture_url }}">
+            {% endif %}
+        </div>
+    {% endfor %}
+
+{% endblock %}
