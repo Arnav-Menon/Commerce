@@ -1,7 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <div class="listing">
+    <div class="item">
         <h2>Listing: {{ listing.item }}</h2>
 
         {% if listing.picture_url %}
@@ -21,8 +21,18 @@
                 {% endfor %}
              {% endif %}
 
-            {{ bid_count }} bid(s) so far. Your bid is the current bid.
-            
+            {{ bid_count }} bid(s) so far.
+                
+            {% if bid_count == 0 %}
+                Be the first bidder!
+            {% else %}
+                {% if latest_bidder == current_user %}
+                    Your bid is the current bid.
+                {% else %}
+                    Place a bid if you wish.
+                {% endif %}
+            {% endif %}
+
             {{ form }}
 
             <input type="submit" value="Place Bid">
@@ -32,7 +42,7 @@
         <strong style="display:block; font-size:20px">Details</strong>
 
         <li>
-            Listed by:
+            Listed by: {{ listing.user }}
         </li>
         <li>
             Category: 
