@@ -1,3 +1,18 @@
 body {
     padding: 10px;
 }
+
+.listings {
+    margin: 5px;
+    display: inline-block;
+    text-align: justify;
+    height: 20%;
+    max-width: 25%;
+    vertical-align: top;
+    align-items: center;
+}
+
+img {
+    width: 50%;
+    height: 30%;
+}
