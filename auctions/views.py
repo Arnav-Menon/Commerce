@@ -72,18 +72,19 @@ def register(request):
 def item_info(request, item_id):
     listing = Listing.objects.get(id=item_id)
     num_bids = listing.listed_item.all().count()
-
-    # TODO: get user who listed the item
-    # probably gonna have to mess with the Listing model
-
+    if num_bids != 0:
+        bid = Bid.objects.get(bid_item=listing)
+        bidder = bid.latest_bidder
+    else:
+        bidder = None
     return render(request, "auctions/item.html", {
         "listing": listing,
         "bid_count": num_bids,
-        "form": NewBidForm()
+        "form": NewBidForm(),
+        "latest_bidder": bidder,
+        "current_user": request.user
     })
 
-# TODO: finish this method
-# form is not rendering prperly
 def place_bid(request, item_id):
 
     listing = Listing.objects.get(id=item_id)
@@ -98,7 +99,11 @@ def place_bid(request, item_id):
             listing.current_price = potential_bid
             listing.save()
             # creates and saves object all in one line
-            new_bid = Bid.objects.create(new_price=potential_bid, bid_item=listing)
+            new_bid = Bid.objects.create(
+                new_price=potential_bid, 
+                bid_item=listing,
+                latest_bidder=request.user
+            )
             return HttpResponseRedirect(reverse("index"))
 
     return render(request, "auctions/item.html", {
@@ -135,10 +140,20 @@ def create_listing(request):
                 description=des,
                 current_price=cp,
                 picture_url=None or pu,
-                category=None or cat
+                category=None or cat,
+                user=request.user
             )
             return index(request)
 
     return render(request, "auctions/create.html", {
         "form": ListingForm()
     })
+
+def watchlist(request):
+    users = User.objects.get(username=request.user)
+    return render(request, "auctions/watchlist.html", {
+        "users": users
+    })
+
+def categories(request):
+    return render(request, "auctions/categories.html")
