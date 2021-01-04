@@ -2,17 +2,24 @@ body {
     padding: 10px;
 }
 
+/* from index.html */
 .listings {
     margin: 5px;
     display: inline-block;
-    text-align: justify;
-    height: 20%;
+    height: 25%;
     max-width: 25%;
     vertical-align: top;
     align-items: center;
 }
 
+/* from index.html */
 img {
     width: 50%;
     height: 30%;
 }
+
+/* from item.html */
+/* .item { */
+    /* background: red; */
+    /* max-width: 90%; */
+/* } */
