@@ -82,7 +82,7 @@ def item_info(request, item_id):
         "bid_count": num_bids,
         "form": NewBidForm(),
         "latest_bidder": bidder,
-        "current_user": request.user
+        "current_user": str(request.user)
     })
 
 def place_bid(request, item_id):
@@ -134,7 +134,6 @@ def create_listing(request):
             if fcd["category"]:
                 cat = fcd["category"]
             
-            messages.add_message(request, messages.INFO, "Listing created successfully")
             new_obj = Listing.objects.create(
                 item=title,
                 description=des,
@@ -143,6 +142,7 @@ def create_listing(request):
                 category=None or cat,
                 user=request.user
             )
+            messages.add_message(request, messages.INFO, f"'{new_obj.item}' created successfully")
             return index(request)
 
     return render(request, "auctions/create.html", {
@@ -171,3 +171,9 @@ def categorical_items(request, category):
         "category": category,
         "listings": listings
     })
+
+def close_listing(request, item_id):
+    listing = Listing.objects.get(id=item_id)
+    listing.delete()
+    messages.add_message(request, messages.INFO, f"'{listing.item}' successfully closed.")
+    return HttpResponseRedirect(reverse("index"))
