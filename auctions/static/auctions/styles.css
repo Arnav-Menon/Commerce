@@ -32,6 +32,13 @@ body {
 /* from item.html */
 .two {
     flex: 1 25%;
+    margin-left: 10%;
+}
+
+/* from item.html */
+#close {
+    vertical-align: top;
+    float: right;
 }
 
 /* from item.html */

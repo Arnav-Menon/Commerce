@@ -6,15 +6,16 @@
         <div class="one">
             <h2>Listing: {{ listing.item }}</h2>
 
+            {% if listing.user == current_user %}
+                <form action="{% url 'close_list' listing.id %}">
+                    <input type="submit" id="close" value="Close Listing">
+                </form>
+            {% endif %}
+
             {% if listing.picture_url %}
                 <img src="{{ listing.picture_url }}" width=80%>
             {% endif %}
-            <button id="close" type="button">Close Listing</button>
-
         </div>
-            {% if listing.user == current_user %}
-                <button type="button">Click Me</button>
-            {% endif %}
         <div class="two">
             <p>Comments will go here</p>
         </div>
@@ -37,12 +38,12 @@
             {{ bid_count }} bid(s) so far.
                 
             {% if bid_count == 0 %}
-                Be the first bidder!
+                Be the first bidder!<br/>
             {% else %}
                 {% if latest_bidder == current_user %}
-                    Your bid is the highest bid.
+                    Your bid is the highest bid.<br/>
                 {% else %}
-                    Place a bid if you wish.
+                    Place a bid if you wish.<br/>
                 {% endif %}
             {% endif %}
 
