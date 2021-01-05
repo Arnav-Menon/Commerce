@@ -1,13 +1,26 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <div class="item">
-        <h2>Listing: {{ listing.item }}</h2>
+<div class="all">
+    <div class="container">
+        <div class="one">
+            <h2>Listing: {{ listing.item }}</h2>
 
-        {% if listing.picture_url %}
-            <img src="{{ listing.picture_url }}" width=70%>
-        {% endif %}
+            {% if listing.picture_url %}
+                <img src="{{ listing.picture_url }}" width=80%>
+            {% endif %}
+            <button id="close" type="button">Close Listing</button>
 
+        </div>
+            {% if listing.user == current_user %}
+                <button type="button">Click Me</button>
+            {% endif %}
+        <div class="two">
+            <p>Comments will go here</p>
+        </div>
+    </div>
+
+    <div class="info">
         <p style="display:block">{{ listing.description }}</p>
 
         <strong style="font-size:40px">${{ listing.current_price }}</strong>
@@ -19,7 +32,7 @@
                 {% for msg in messages %}
                     <ol><mark>{{msg}}</mark></ol>
                 {% endfor %}
-             {% endif %}
+            {% endif %}
 
             {{ bid_count }} bid(s) so far.
                 
@@ -52,8 +65,6 @@
                 No Category Listed
             {% endif %}
         </li>
-
     </div>
-    
-    
+</div>
 {% endblock %}

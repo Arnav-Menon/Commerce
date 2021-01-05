@@ -13,26 +13,33 @@ body {
 }
 
 /* from index.html */
-img {
-    width: 50%;
-    height: 30%;
+.listings > img { 
+    max-width: 100%;
+    max-height: 100%;
 }
 
 /* from item.html */
-/* .item { */
-    /* background: red; */
-    /* max-width: 90%; */
-/* } */
+.container {
+  display: flex;
+}
 
-/* from categories.html */
-/* .container { */
-    /* display: flex; */
-    /* width: 100%; */
-    /* border: 2px solid black; */
-/* } */
+/* from item.html */
+.one {
+    flex: 1 1 65%;
+    min-width: 50%;
+}
 
-/* from categories.html */
-/* .cats { */
-    /* flex: 20; */
-    /* border: 2px solid red; */
-/* } */
+/* from item.html */
+.two {
+    flex: 1 25%;
+}
+
+/* from item.html */
+.info {
+    margin-left: 1.5%;
+}
+
+/* from item.html */
+.all {
+    display: inline-block;
+}
