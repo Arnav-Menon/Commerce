@@ -8,6 +8,8 @@ from django.contrib import messages
 
 from .models import *
 
+import datetime
+
 class NewBidForm(forms.Form):
     bid = forms.IntegerField()
 
@@ -161,12 +163,12 @@ def add_watchlist(request, item_id):
     listing = Listing.objects.get(id=item_id)
     watch = Watchlist.objects.all()
     for i in watch:
-        if i.what == listing:
+        if i.what == listing and i.who == request.user:
             in_watchlist = True
 
     if in_watchlist:
         messages.add_message(request, messages.INFO, f"'{listing.item}' removed from watchlist.")
-        Watchlist.objects.filter(who=request.user).delete()
+        Watchlist.objects.filter(who=request.user, what=listing).delete()
     else:
         messages.add_message(request, messages.INFO, f"'{listing.item}' added to watchlist.")
         watch_item = Watchlist.objects.create(
