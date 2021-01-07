@@ -1,8 +1,24 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h1>Watchlist</h1>
+    <h2>Watchlist</h2>
 
+    {% if user_items %}
+        {% for i in user_items %}
+            <div class="listings">
+                <h4>
+                    <a href="{% url 'item_info' i.id %}">{{ i.item }}</a>
+                </h4>
+                <strong>Description:</strong> {{ i.description}}<br/>
+                <strong>Current Price:</strong> ${{ i.current_price }}<br/>
+                {% if i.picture_url %}
+                    <img src="{{ i.picture_url }}">
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        Your watchlist is currently empty.
+    {% endif %}
     <ol>{{ users.username }}</ol>
 
 {% endblock %}

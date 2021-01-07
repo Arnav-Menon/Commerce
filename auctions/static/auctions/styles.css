@@ -21,18 +21,21 @@ body {
 /* from item.html */
 .container {
   display: flex;
+  /* background: red; */
 }
 
 /* from item.html */
 .one {
     flex: 1 1 65%;
     min-width: 50%;
+    /* background: lightpink; */
 }
 
 /* from item.html */
 .two {
     flex: 1 25%;
-    margin-left: 10%;
+    margin-left: 1%;
+    /* background: rosybrown; */
 }
 
 /* from item.html */
@@ -42,11 +45,20 @@ body {
 }
 
 /* from item.html */
-.info {
+.desc {
     margin-left: 1.5%;
+    /* background: honeydew; */
 }
 
 /* from item.html */
 .all {
     display: inline-block;
+    /* background: blue; */
+}
+
+/* from item.html */
+.buttons {
+    display: flex;
+    justify-content: center;
+    /* background: green; */
 }

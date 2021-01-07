@@ -72,6 +72,11 @@ def register(request):
 def item_info(request, item_id):
     listing = Listing.objects.get(id=item_id)
     num_bids = listing.listed_item.all().count()
+    watch_items = Watchlist.objects.filter(who=request.user)
+    is_common = False
+    for i in watch_items:
+        if i.what == listing:
+            is_common = True
     if num_bids != 0:
         bid = Bid.objects.filter(bid_item=listing).last()
         bidder = bid.latest_bidder
@@ -82,7 +87,9 @@ def item_info(request, item_id):
         "bid_count": num_bids,
         "form": NewBidForm(),
         "latest_bidder": bidder,
-        "current_user": str(request.user)
+        "current_user": str(request.user),
+        "watch_items": watch_items,
+        "is_common": is_common
     })
 
 def place_bid(request, item_id):
@@ -149,10 +156,39 @@ def create_listing(request):
         "form": ListingForm()
     })
 
+def add_watchlist(request, item_id):
+    in_watchlist = False
+    listing = Listing.objects.get(id=item_id)
+    watch = Watchlist.objects.all()
+    for i in watch:
+        if i.what == listing:
+            in_watchlist = True
+
+    if in_watchlist:
+        messages.add_message(request, messages.INFO, f"'{listing.item}' removed from watchlist.")
+        Watchlist.objects.filter(who=request.user).delete()
+    else:
+        messages.add_message(request, messages.INFO, f"'{listing.item}' added to watchlist.")
+        watch_item = Watchlist.objects.create(
+            who=request.user,
+            what=listing
+        )
+    
+    return HttpResponseRedirect(reverse("index"))
+
 def watchlist(request):
-    users = User.objects.get(username=request.user)
+    user_items = [i.what for i in Watchlist.objects.filter(who=request.user)]
+    items = Listing.objects.all()
+    user = User.objects.get(username=request.user)
+    user_specific_items = []
+    items_list = []
+    for i in items:
+        if i in user_items:
+            user_specific_items.append(i)
+        items_list.append(i.item)
     return render(request, "auctions/watchlist.html", {
-        "users": users
+        "user": user,
+        "user_items": user_items
     })
 
 def list_categories(request):

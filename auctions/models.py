@@ -18,6 +18,13 @@ class Listing(models.Model):
     def __str__(self):
         return f"{self.item}"
 
+class Watchlist(models.Model):
+    who = models.ForeignKey(User, on_delete=models.CASCADE, related_name="for_whom")
+    what = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="what_item")
+    
+    def __str__(self):
+        return f"{self.who}: {self.what}"
+
 class ListingForm(ModelForm):
     picture_url = forms.URLField(
         required=False,
