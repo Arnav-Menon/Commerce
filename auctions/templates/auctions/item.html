@@ -11,7 +11,22 @@
             {% endif %}
         </div>
         <div class="two">
-            <p>Comments will go here</p>
+            <p>Comments</p>
+            {% if comments %}
+                {% for c in comments %}
+                    <div class="comments-container">
+                        <u>{{ c.when}}</u>
+                        <div class="comment">
+                            <strong>{{ c.commenter }}</strong>: {{ c.comment}}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <form action="{% url 'item_info' listing.id %}" method="post">
+                {% csrf_token %}
+                {{ comment_form }}
+                <input type="submit" value="post">
+            </form>
         </div>
     </div>
 
@@ -36,13 +51,13 @@
                     Be the first bidder!<br/>
                 {% else %}
                     {% if latest_bidder == current_user %}
-                        Your bid is the highest bid.<br/>
+                        Your bid is the highest bid!<br/>
                     {% else %}
                         Place a bid if you wish.<br/>
                     {% endif %}
                 {% endif %}
 
-                {{ form }}
+                {{ bid_form }}
 
                 <input type="submit" value="Place Bid">
             </form>

@@ -3,6 +3,8 @@ from django.db import models
 from django.forms import ModelForm
 from django import forms
 
+from datetime import datetime
+
 
 class User(AbstractUser):
     pass
@@ -59,4 +61,9 @@ class Bid(models.Model):
 
 class Comment(models.Model):
     item_commented = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="og_item")
+    commenter = models.ForeignKey(User, on_delete=models.CASCADE, related_name="quien")
     comment = models.CharField(max_length=128)
+    when = models.DateTimeField(default=datetime.now, blank=True)
+
+    def __str__(self):
+        return f"{self.commenter} commented on {self.item_commented}"

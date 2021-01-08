@@ -21,7 +21,7 @@ body {
 /* from item.html */
 .container {
   display: flex;
-  /* background: red; */
+  /* background: paleturquoise; */
 }
 
 /* from item.html */
@@ -39,6 +39,34 @@ body {
 }
 
 /* from item.html */
+.two > form {
+    position: relative;
+    bottom: 5px;
+    /* background: lightyellow; */
+}
+
+.two > form > input[type="submit"] {
+    vertical-align: top;
+}
+
+.two > p{
+    text-align: center;
+}
+
+/* from item.html */
+.comments-container {
+    display: grid;
+    /* background: green; */
+    margin-bottom: 2%;
+}
+
+/* from item.html */
+.comment {
+    /* background: red; */
+    margin-bottom: 2%;
+}
+
+/* from item.html */
 #close {
     vertical-align: top;
     float: right;
@@ -53,7 +81,7 @@ body {
 /* from item.html */
 .all {
     display: inline-block;
-    /* background: blue; */
+    /* background: aquamarine; */
 }
 
 /* from item.html */

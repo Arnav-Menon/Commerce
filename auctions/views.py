@@ -13,6 +13,18 @@ import datetime
 class NewBidForm(forms.Form):
     bid = forms.IntegerField()
 
+class NewCommentForm(forms.Form):
+    comment = forms.CharField(
+        label="",
+        widget=forms.Textarea(
+            attrs={
+                "placeholder": "place a comment",
+                "rows": 1,
+                "cols": 34
+            }
+        )
+    )
+
 def index(request):
     listings = Listing.objects.all()
     return render(request, "auctions/index.html", {
@@ -84,14 +96,26 @@ def item_info(request, item_id):
         bidder = bid.latest_bidder
     else:
         bidder = None
+    if request.method == "POST":
+        comment_form = NewCommentForm(request.POST)
+        if comment_form.is_valid():
+            user_comment = comment_form.cleaned_data["comment"]
+            Comment.objects.create(
+                item_commented=listing,
+                commenter=request.user,
+                comment=user_comment,
+            )
+    comments = Comment.objects.filter(item_commented=listing)
     return render(request, "auctions/item.html", {
         "listing": listing,
         "bid_count": num_bids,
-        "form": NewBidForm(),
-        "latest_bidder": bidder,
+        "bid_form": NewBidForm(),
+        "comment_form": NewCommentForm(),
+        "latest_bidder": str(bidder),
         "current_user": str(request.user),
         "watch_items": watch_items,
-        "is_common": is_common
+        "is_common": is_common,
+        "comments": comments
     })
 
 def place_bid(request, item_id):
@@ -113,12 +137,13 @@ def place_bid(request, item_id):
                 bid_item=listing,
                 latest_bidder=request.user
             )
+            messages.add_message(request, messages.INFO, f"Bid on '{listing.item}' successfully placed!")
             return HttpResponseRedirect(reverse("index"))
 
     return render(request, "auctions/item.html", {
         "listing": listing,
         "bid_count": num_bids,
-        "form": NewBidForm()
+        "bid_form": NewBidForm()
     })
 
 def create_listing(request):
