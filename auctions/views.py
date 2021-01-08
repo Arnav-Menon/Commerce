@@ -8,8 +8,6 @@ from django.contrib import messages
 
 from .models import *
 
-import datetime
-
 class NewBidForm(forms.Form):
     bid = forms.IntegerField()
 
