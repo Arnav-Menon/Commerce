@@ -5,11 +5,11 @@
 
     {% if user.is_authenticated %}
 
-    {% if messages %}
-        {% for msg in messages %}
-            <ol><mark>{{msg}}</mark></ol>
-        {% endfor %}
-    {% endif %}
+        {% if messages %}
+            {% for msg in messages %}
+                <ol><mark>{{msg}}</mark></ol>
+            {% endfor %}
+        {% endif %}
         {% for items in listing %}
         <div class="listings">
                 <h4>
